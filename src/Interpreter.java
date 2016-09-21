@@ -85,12 +85,37 @@ public class Interpreter {
                 + "candles along the walls, and the room stretches out into a large "
                 + "chamber. There are rocks scattered around the ground and you can't "
                 + "see the ceiling.");
+        atrium.setDescription("The room is full of various plants and floral arrangements. "
+                + "There's a large dome of glass with light filtering through from what "
+                + "looks like outside, but that's impossible from your depth.");
+        mirror.setDescription("This room has mirrors on all sides. The mirrors seem to go on for infinity.");
+        lava.setDescription("The room is boiling hot and your skin feels like "
+                + "it's being set on fire just standing here. There is a giant pool "
+                + "of lava in the middle of the floor, barring any passage whatsoever.");
         Exit entryEast = new Exit("E", entry, cave);
         Exit caveWest = new Exit("W", cave, entry);
+        Exit caveSouth = new Exit("S", cave, lava);
+        Exit caveNorth = new Exit("N", cave, mirror);
+        Exit caveEast = new Exit("E", cave, atrium);
+        Exit mirrorSouth = new Exit("S", mirror, cave);
+        Exit atriumWest = new Exit("W", atrium, cave);
+        Exit lavaNorth = new Exit("N", lava, cave);
         entryEast.setDescription("The cave tunnels to the east and into darkness.");
         caveWest.setDescription("There is a tunnel to the west, partially lit with candles.");
+        caveSouth.setDescription("There is a tunnel to the south. A vicous heat is coming from it.");
+        caveNorth.setDescription("A small crawlhole is to the North of you. It narrows to a point, but is passable.");
+        caveEast.setDescription("There is natural light coming from a path to the East. It smells nice.");
+        mirrorSouth.setDescription("The path to the south narrows to a small crawlhole into darkness.");
+        atriumWest.setDescription("There is a defined path leading to the west into darkness.");
+        lavaNorth.setDescription("The path to the north is significantly cooler than right here!");
         entry.addExit(entryEast);
-        cave.addExit(caveWest);        
+        cave.addExit(caveEast);
+        cave.addExit(caveWest);
+        cave.addExit(caveSouth);
+        cave.addExit(caveNorth);
+        lava.addExit(lavaNorth);
+        mirror.addExit(mirrorSouth);
+        atrium.addExit(atriumWest);
         gamestate.initialize(towerOfBismuth);
         gamestate.setCurrentRoom(entry);
     }
