@@ -14,7 +14,7 @@ public final class CommandFactory {
         
     }
     
-    public static Command parse(String commandString){
+    public Command parse(String commandString){
         Command command = new Command(commandString);
         return command;
     }

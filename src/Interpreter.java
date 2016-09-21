@@ -31,7 +31,11 @@ public class Interpreter {
                 + "enter 'c'");
         boolean bool = true;
         while(bool){
-            System.out.println(gamestate.getCurrentRoom().getDescription());
+            System.out.println(gamestate.getCurrentRoom().getName());
+            if(gamestate.getCurrentRoom().visited == false){
+                System.out.println(gamestate.getCurrentRoom().getDescription());
+                gamestate.getCurrentRoom().visited = true;
+            }
             arlist = gamestate.getCurrentRoom().exits;
             for(int i = 0; i < arlist.size(); i++){
                 System.out.println(gamestate.getCurrentRoom().exits.get(i).getDescription());
@@ -41,6 +45,24 @@ public class Interpreter {
             if(input.equals("Q")){
                 bool = false;
                 break;
+            }
+            if(gamestate.getCurrentRoom().getExits().contains(cf.parse(input).execute())){
+                for(int i = 0; i < arlist.size(); i++){
+                    if(gamestate.getCurrentRoom().exits.get(i).getDirection().equals(cf.parse(input).execute())){
+                        gamestate.setCurrentRoom(gamestate.getCurrentRoom().exits.get(i).getDestination());
+                    }
+                }
+            }
+            else if(cf.parse(input).execute().equals("C")){
+                System.out.println("W = go West\nE = go East\nN = go North\n"
+                        + "S = go South\nC = Commands\nU = go up\nD = go down\n"
+                        + "R = Room Description");
+            }
+            else if(cf.parse(input).execute().equals("R")){
+                gamestate.getCurrentRoom().visited = false;
+            }
+            else{
+                System.out.println("That action is impossible.");
             }
         }
     }
@@ -63,8 +85,8 @@ public class Interpreter {
                 + "candles along the walls, and the room stretches out into a large "
                 + "chamber. There are rocks scattered around the ground and you can't "
                 + "see the ceiling.");
-        Exit entryEast = new Exit("East", entry, cave);
-        Exit caveWest = new Exit("West", cave, entry);
+        Exit entryEast = new Exit("E", entry, cave);
+        Exit caveWest = new Exit("W", cave, entry);
         entryEast.setDescription("The cave tunnels to the east and into darkness.");
         caveWest.setDescription("There is a tunnel to the west, partially lit with candles.");
         entry.addExit(entryEast);
