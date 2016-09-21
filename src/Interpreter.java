@@ -31,14 +31,14 @@ public class Interpreter {
                 + "enter 'c'");
         boolean bool = true;
         while(bool){
+            arlist = gamestate.getCurrentRoom().exits;
             System.out.println(gamestate.getCurrentRoom().getName());
             if(gamestate.getCurrentRoom().visited == false){
                 System.out.println(gamestate.getCurrentRoom().getDescription());
+                for(int i = 0; i < arlist.size(); i++){
+                    System.out.println(gamestate.getCurrentRoom().exits.get(i).getDescription());
+                }
                 gamestate.getCurrentRoom().visited = true;
-            }
-            arlist = gamestate.getCurrentRoom().exits;
-            for(int i = 0; i < arlist.size(); i++){
-                System.out.println(gamestate.getCurrentRoom().exits.get(i).getDescription());
             }
             System.out.print(">>");
             String input = scan.nextLine().toUpperCase();
