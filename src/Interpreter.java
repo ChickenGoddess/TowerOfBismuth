@@ -50,6 +50,7 @@ public class Interpreter {
                 for(int i = 0; i < arlist.size(); i++){
                     if(gamestate.getCurrentRoom().exits.get(i).getDirection().equals(cf.parse(input).execute())){
                         gamestate.setCurrentRoom(gamestate.getCurrentRoom().exits.get(i).getDestination());
+                        break;
                     }
                 }
             }
