@@ -15,9 +15,15 @@ public class Dungeon {
     
     String name;
     Hashtable<String, Room> rooms = new Hashtable<>();
+    String origin;
     
     public Dungeon(Room initial, String name){
         this.name = name;
+        Reader read = new Reader("Rooms.txt");
+        read.openReader();
+        read.readAll();
+        read.closeReader();
+        read.origin = origin;
     }
     
     public String getName(){
@@ -36,6 +42,11 @@ public class Dungeon {
             }
         }
         return room;
+    }
+    
+    public void readRoom(){
+         
+        
     }
     
 }

@@ -1,0 +1,14 @@
+!Entry
+You are in a cave. It's dark, but it's possible to see. Some stalactites hang precariously from the ceiling. Candles are lined up all along the walls, dim but visibly helpful.
+
+!Cave
+You are deeper in the cave. There's little light, but you can make out enough to see where you're going. There are some candles along the walls, and the room stretches out into a large chamber. There are rocks scattered around the ground and you can't see the ceiling.
+
+!Atrium
+The room is full of various plants and floral arrangements. There's a large dome of glass with light filtering through from what looks like outside, but that's impossible from your depth.
+
+!Mirror
+This room has mirrors on all sides. The mirrors seem to go on for infinity.
+
+!Lava
+The room is boiling hot and your skin feels like it's being set on fire just standing here. There is a giant pool of lava in the middle of the floor, barring any passage whatsoever.

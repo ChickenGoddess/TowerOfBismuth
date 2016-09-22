@@ -1,6 +1,3 @@
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -17,6 +14,7 @@ import java.util.Scanner;
 public class Interpreter {
     
     public static void main(String[] args){
+        
         
         ArrayList<Exit> arlist = new ArrayList<>();
         Scanner scan = new Scanner(System.in);
@@ -61,6 +59,22 @@ public class Interpreter {
             }
             else if(cf.parse(input).execute().equals("R")){
                 gamestate.getCurrentRoom().visited = false;
+            }
+            else if(cf.parse(input).execute().equals("ADMIN")){
+                boolean bool2 = true;
+                while(bool2){
+                    System.out.println("Admin box. Press 'q' to exit, 'r' to read rooms, and 'e' to edit rooms.");
+                    String str = scan.nextLine().toUpperCase();
+                    if(cf.parse(str).execute().equals("R")){
+                        Reader read = new Reader("DefaultRooms.txt");
+                        read.openReader();
+                        System.out.println(read.readAll());
+                        read.closeReader();
+                    }
+                    else if(cf.parse(str).execute().equals("Q")){
+                        break;
+                    }
+                }
             }
             else{
                 System.out.println("That action is impossible.");
