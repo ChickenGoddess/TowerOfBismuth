@@ -15,7 +15,6 @@ public class Interpreter {
     
     public static void main(String[] args){
         
-        
         ArrayList<Exit> arlist = new ArrayList<>();
         Scanner scan = new Scanner(System.in);
         CommandFactory cf = new CommandFactory();
@@ -24,6 +23,7 @@ public class Interpreter {
         if(gamestate.getDungeon() == null){
             interpret.buildSampleDungeon();
         }
+        gamestate.getDungeon().readRoom();
         System.out.println("Welcome to " + gamestate.getDungeon().getName());
         System.out.println("This is a text based adventure. For a commands list "
                 + "enter 'c'");
@@ -86,35 +86,17 @@ public class Interpreter {
 
         
         GameState gamestate = new GameState();
-        Room entry = new Room("Entry");
-        Room cave = new Room("Cave");
-        Room atrium = new Room("Atrium");
-        Room mirror = new Room("Mirror Room");
-        Room lava = new Room("Lava Pit");
-        Dungeon towerOfBismuth = new Dungeon(entry, "Tower of Bismuth");
-        entry.setDescription("You are in a cave. It's dark, but it's possible to see."
-                + " Some stalactites hang precariously from the ceiling. Candles are "
-                + "lined up all along the walls, dim but visibly helpful.");
-        cave.setDescription("You are deeper in the cave. There's little light, but you"
-                + " can make out enough to see where you're going. There are some "
-                + "candles along the walls, and the room stretches out into a large "
-                + "chamber. There are rocks scattered around the ground and you can't "
-                + "see the ceiling.");
-        atrium.setDescription("The room is full of various plants and floral arrangements. "
-                + "There's a large dome of glass with light filtering through from what "
-                + "looks like outside, but that's impossible from your depth.");
-        mirror.setDescription("This room has mirrors on all sides. The mirrors seem to go on for infinity.");
-        lava.setDescription("The room is boiling hot and your skin feels like "
-                + "it's being set on fire just standing here. There is a giant pool "
-                + "of lava in the middle of the floor, barring any passage whatsoever.");
-        Exit entryEast = new Exit("E", entry, cave);
-        Exit caveWest = new Exit("W", cave, entry);
-        Exit caveSouth = new Exit("S", cave, lava);
-        Exit caveNorth = new Exit("N", cave, mirror);
-        Exit caveEast = new Exit("E", cave, atrium);
-        Exit mirrorSouth = new Exit("S", mirror, cave);
-        Exit atriumWest = new Exit("W", atrium, cave);
-        Exit lavaNorth = new Exit("N", lava, cave);
+        Dungeon towerOfBismuth = new Dungeon("Tower of Bismuth");
+        gamestate.initialize(towerOfBismuth);
+        gamestate.getDungeon().readRoom();
+        Exit entryEast = new Exit("E", gamestate.getDungeon().getRoom("Entry"), gamestate.getDungeon().getRoom("Cave"));
+        Exit caveWest = new Exit("W", gamestate.getDungeon().getRoom("Cave"), gamestate.getDungeon().getRoom("Entry"));
+        Exit caveSouth = new Exit("S", gamestate.getDungeon().getRoom("Cave"), gamestate.getDungeon().getRoom("Lava"));
+        Exit caveNorth = new Exit("N", gamestate.getDungeon().getRoom("Cave"), gamestate.getDungeon().getRoom("Mirror"));
+        Exit caveEast = new Exit("E", gamestate.getDungeon().getRoom("Cave"), gamestate.getDungeon().getRoom("Atrium"));
+        Exit mirrorSouth = new Exit("S", gamestate.getDungeon().getRoom("Mirror"), gamestate.getDungeon().getRoom("Cave"));
+        Exit atriumWest = new Exit("W", gamestate.getDungeon().getRoom("Atrium"), gamestate.getDungeon().getRoom("Cave"));
+        Exit lavaNorth = new Exit("N", gamestate.getDungeon().getRoom("Lava"), gamestate.getDungeon().getRoom("Cave"));
         entryEast.setDescription("The cave tunnels to the east and into darkness.");
         caveWest.setDescription("There is a tunnel to the west, partially lit with candles.");
         caveSouth.setDescription("There is a tunnel to the south. A vicous heat is coming from it.");
@@ -123,16 +105,15 @@ public class Interpreter {
         mirrorSouth.setDescription("The path to the south narrows to a small crawlhole into darkness.");
         atriumWest.setDescription("There is a defined path leading to the west into darkness.");
         lavaNorth.setDescription("The path to the north is significantly cooler than right here!");
-        entry.addExit(entryEast);
-        cave.addExit(caveEast);
-        cave.addExit(caveWest);
-        cave.addExit(caveSouth);
-        cave.addExit(caveNorth);
-        lava.addExit(lavaNorth);
-        mirror.addExit(mirrorSouth);
-        atrium.addExit(atriumWest);
-        gamestate.initialize(towerOfBismuth);
-        gamestate.setCurrentRoom(entry);
+        gamestate.getDungeon().getRoom("Entry").addExit(entryEast);
+        gamestate.getDungeon().getRoom("Cave").addExit(caveEast);
+        gamestate.getDungeon().getRoom("Cave").addExit(caveWest);
+        gamestate.getDungeon().getRoom("Cave").addExit(caveSouth);
+        gamestate.getDungeon().getRoom("Cave").addExit(caveNorth);
+        gamestate.getDungeon().getRoom("Lava").addExit(lavaNorth);
+        gamestate.getDungeon().getRoom("Mirror").addExit(mirrorSouth);
+        gamestate.getDungeon().getRoom("Atrium").addExit(atriumWest);
+        gamestate.setCurrentRoom(gamestate.getDungeon().getRoom("Entry"));
     }
     
 }

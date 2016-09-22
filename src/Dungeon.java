@@ -17,20 +17,19 @@ public class Dungeon {
     Hashtable<String, Room> rooms = new Hashtable<>();
     String origin;
     
-    public Dungeon(Room initial, String name){
+    public Dungeon(String name){
         this.name = name;
         Reader read = new Reader("Rooms.txt");
         read.openReader();
-        read.readAll();
+        origin = read.readAll();
         read.closeReader();
-        read.origin = origin;
     }
     
     public String getName(){
         return name;
     }
     
-    public void addRoom(Room room){
+    private void addRoom(Room room){
         rooms.put(room.getName(), room);
     }
     
@@ -45,8 +44,27 @@ public class Dungeon {
     }
     
     public void readRoom(){
-         
-        
+        String left = origin;
+        String at = "";
+        int exclamation = 0;
+        for(int i = 0; i < origin.length(); i++){
+            at = origin.substring(i, i+1);
+            if(at.equals("!")){
+                exclamation += 1;
+            }
+        }
+        for(int j = 0; j < exclamation; j++){
+            String change = left.substring(left.indexOf("!"), left.indexOf("\n"));
+            String roomName = change.replaceAll("!", "").replaceAll("\n", "");
+            left = left.replaceAll(change, "").replaceFirst("\n", "");
+            change = left.substring(left.indexOf("#"), left.indexOf("\n"));
+            String roomDesc = change.replaceAll("#", "");
+            left = left.replaceAll(change, "").replaceFirst("\n", "");
+            left = left.replaceFirst("\n", "");
+            Room room = new Room(roomName);
+            room.setDescription(roomDesc);
+            Dungeon.this.addRoom(room);
+        }
     }
     
 }
