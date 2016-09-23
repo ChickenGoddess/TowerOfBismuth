@@ -91,7 +91,6 @@ public class Room {
             System.out.println(left);
             run = Integer.parseInt(change);
             change = left.substring(left.indexOf("!"), left.indexOf("\n"));
-            System.out.println(change);
             roomName = change.replaceAll("!", "").replaceAll("\n", "");
             left = left.replaceAll(change, "").replaceFirst("\n", "");
             for(int i = 0; i < run; i++){
@@ -102,12 +101,12 @@ public class Room {
                 change = left.substring(left.indexOf("#"), left.indexOf("\n"));
                 exitDesc = change.replaceAll("#", "").replaceAll("\n", "");
                 left = left.replaceAll(change, "").replaceFirst("\n", "");
-                change = left.substring(left.indexOf("$"), left.indexOf("\n"));
-                exitRoom = change.replaceAll("$", "").replaceAll("\n", "");
+                change = left.substring(left.indexOf("~"), left.indexOf("\n"));
+                exitRoom = change.replaceAll("~", "").replaceAll("\n", "");
                 left = left.replaceAll(change, "").replaceFirst("\n", "");
                 left = left.replaceFirst("\n", "");
-                Exit exit = new Exit(exitDirection, gamestate.getDungeon().rooms.get(roomName), gamestate.getDungeon().rooms.get(exitRoom));
-                Room.this.addExit(exit);
+                Exit exit = new Exit(exitDirection, gamestate.getDungeon().getRoom(roomName), gamestate.getDungeon().getRoom(exitRoom));
+                exit.setDescription(exitDesc);
             }
         }
     }
