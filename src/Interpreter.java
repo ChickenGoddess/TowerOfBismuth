@@ -89,6 +89,7 @@ public class Interpreter {
         Dungeon towerOfBismuth = new Dungeon("Tower of Bismuth");
         gamestate.initialize(towerOfBismuth);
         gamestate.getDungeon().readRoom();
+        gamestate.getDungeon().rooms.get("Atrium").readExit();
         Exit entryEast = new Exit("E", gamestate.getDungeon().getRoom("Entry"), gamestate.getDungeon().getRoom("Cave"));
         Exit caveWest = new Exit("W", gamestate.getDungeon().getRoom("Cave"), gamestate.getDungeon().getRoom("Entry"));
         Exit caveSouth = new Exit("S", gamestate.getDungeon().getRoom("Cave"), gamestate.getDungeon().getRoom("Lava"));

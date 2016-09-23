@@ -18,13 +18,19 @@ import java.util.Iterator;
  */
 public class Room {
     
+    GameState gamestate = new GameState();
     String description;
     String name;
     boolean visited;
     ArrayList<Exit> exits = new ArrayList<>();
+    String origin;
     
     public Room(String name){
         this.name = name;
+        Reader read = new Reader("Exits.txt");
+        read.openReader();
+        origin = read.readAll();
+        read.closeReader();
     }
     
     public String getDescription(){
@@ -61,6 +67,49 @@ public class Room {
     }
     public int getExitsSize(){
         return exits.size();
+    }
+    
+    public void readExit(){
+        String left = origin;
+        String at = "";
+        int exclamation = 0;
+        for(int i = 0; i < origin.length(); i++){
+            at = origin.substring(i, i+1);
+            if(at.equals("!")){
+                exclamation += 1;
+            }
+        }
+        for(int j = 0; j < exclamation; j++){
+            String roomName = "";
+            String exitDesc = "";
+            String exitDirection = "";
+            String exitRoom = "";
+            String change = "";
+            int run;
+            change = left.substring(left.indexOf("!")-1, left.indexOf("!"));
+            left = left.replaceAll(change, "");
+            System.out.println(left);
+            run = Integer.parseInt(change);
+            change = left.substring(left.indexOf("!"), left.indexOf("\n"));
+            System.out.println(change);
+            roomName = change.replaceAll("!", "").replaceAll("\n", "");
+            left = left.replaceAll(change, "").replaceFirst("\n", "");
+            for(int i = 0; i < run; i++){
+                change = left.substring(left.indexOf("&&"), left.indexOf("\n"));
+                String edit = change.replaceAll("&&", "").replaceAll("\n", "");
+                exitDirection = edit;
+                left = left.replaceAll(change, "").replaceFirst("\n", "");
+                change = left.substring(left.indexOf("#"), left.indexOf("\n"));
+                exitDesc = change.replaceAll("#", "").replaceAll("\n", "");
+                left = left.replaceAll(change, "").replaceFirst("\n", "");
+                change = left.substring(left.indexOf("$"), left.indexOf("\n"));
+                exitRoom = change.replaceAll("$", "").replaceAll("\n", "");
+                left = left.replaceAll(change, "").replaceFirst("\n", "");
+                left = left.replaceFirst("\n", "");
+                Exit exit = new Exit(exitDirection, gamestate.getDungeon().rooms.get(roomName), gamestate.getDungeon().rooms.get(exitRoom));
+                Room.this.addExit(exit);
+            }
+        }
     }
     
 }
