@@ -1,9 +1,9 @@
-1!Entry
+1#!Entry
 &&E
 #The cave tunnels to the east and into darkness.
 ~Cave
 
-4!Cave
+4#!Cave
 &&N
 #A small crawlhole is to the North of you. It narrows to a point, but is passable.
 ~Mirror
@@ -17,17 +17,17 @@
 #There is a tunnel to the west, partially lit with candles.
 ~Entry
 
-1!Atrium
+1#!Atrium
 &&W
 #There is a defined path leading to the west into darkness.
 ~Cave
 
-1!Mirror
+1#!Mirror
 &&S
 #The path to the south narrows to a small crawlhole into darkness.
 ~Cave
 
-1!Lava
+1#!Lava
 &&N
 #The path to the north is significantly cooler than right here!
 ~Cave

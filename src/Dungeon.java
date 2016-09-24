@@ -13,6 +13,7 @@ import java.util.Hashtable;
  */
 public class Dungeon {
     
+    GameState gamestate = new GameState();
     String name;
     Hashtable<String, Room> rooms = new Hashtable<>();
     String origin;
