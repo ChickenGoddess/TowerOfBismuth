@@ -74,6 +74,19 @@ public class Interpreter {
                     else if(cf.parse(str).execute().equals("Q")){
                         break;
                     }
+                    else if(cf.parse(str).execute().equals("E")){
+                        RoomsEditor re = new RoomsEditor("Rooms.txt");
+                        System.out.println("Enter room name: ");
+                        String s = scan.nextLine();
+                        System.out.println("Enter room description: ");
+                        String desc = scan.nextLine();
+                        re.openEditor();
+                        re.addRoom(s, desc);
+                        re.closeEditor();
+                    }
+                    else{
+                        System.out.println("Incorrect input");
+                    }
                 }
             }
             else{
@@ -82,14 +95,18 @@ public class Interpreter {
         }
     }
     
+    public String promptUser(Scanner commandLine){
+        return null;
+    }
+    
     public void buildSampleDungeon(){
 
         
         GameState gamestate = new GameState();
-        Dungeon towerOfBismuth = new Dungeon("Tower of Bismuth");
+        Dungeon towerOfBismuth = new Dungeon("trinklev2.bork");
         gamestate.initialize(towerOfBismuth);
         gamestate.getDungeon().readRoom();
-        gamestate.getDungeon().rooms.get("Entry").readExit();
+        gamestate.getDungeon().readExit();
         gamestate.setCurrentRoom(gamestate.getDungeon().getRoom("Entry"));
     }
     

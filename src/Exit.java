@@ -1,3 +1,6 @@
+
+import java.util.Scanner;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -14,6 +17,10 @@ public class Exit {
     String description;
     Room destination;
     Room source;
+    
+    public Exit(Scanner s, Dungeon dungeon){
+        
+    }
     
     public Exit(String direction, Room source, Room destination){
         this.direction = direction;

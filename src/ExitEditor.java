@@ -1,9 +1,7 @@
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
@@ -18,7 +16,7 @@ import java.util.Scanner;
  *
  * @author User
  */
-public class RoomsEditor {
+public class ExitEditor {
     
     String fileName;
     File file;
@@ -27,8 +25,7 @@ public class RoomsEditor {
     FileWriter fw;
     BufferedWriter bw;
     
-    
-    public RoomsEditor(String fileName){
+    public ExitEditor(String fileName){
         this.fileName = fileName;
         file = new File(fileName);
     }
@@ -60,7 +57,7 @@ public class RoomsEditor {
         bw = new BufferedWriter(fw);
     }
     
-    public void addRoom(String name, String description){
+   /* public void addExit(String direction, String roomName, String exitRoom){
         if(origin.equals("")){
             origin = origin + "!" + name + "\n#" + description;
         }
@@ -74,7 +71,7 @@ public class RoomsEditor {
         catch(IOException ee){
             System.out.println(ee);
         }
-    }
+    }*/
     
     public void closeEditor(){
         try{

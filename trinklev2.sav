@@ -1,0 +1,15 @@
+Bork v2.0
+save data
+Dungeon file: /home/stephen/teaching/240/bork/files/trinkle.bork
+Room states:
+Stephen's office:
+beenHere=true
+---
+Basement hallway:
+beenHere=true
+---
+Rotunda:
+beenHere=true
+---
+===
+Current room: Stephen's office
