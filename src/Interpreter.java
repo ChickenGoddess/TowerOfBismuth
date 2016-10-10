@@ -21,9 +21,8 @@ public class Interpreter {
         Interpreter interpret = new Interpreter();
         GameState gamestate = new GameState();
         if(gamestate.getDungeon() == null){
-            interpret.buildSampleDungeon();
+            interpret.setupDungeon();
         }
-        gamestate.getDungeon().readRoom();
         System.out.println("Welcome to " + gamestate.getDungeon().getName());
         System.out.println("This is a text based adventure. For a commands list "
                 + "enter 'c'");
@@ -39,7 +38,7 @@ public class Interpreter {
                 gamestate.getCurrentRoom().visited = true;
             }
             System.out.print(">>");
-            String input = scan.nextLine().toUpperCase();
+            String input = scan.nextLine().toLowerCase();
             if(input.equals("Q")){
                 bool = false;
                 break;
@@ -52,29 +51,29 @@ public class Interpreter {
                     }
                 }
             }
-            else if(cf.parse(input).execute().equals("C")){
+            else if(cf.parse(input).execute().equals("c")){
                 System.out.println("W = go West\nE = go East\nN = go North\n"
                         + "S = go South\nC = Commands\nU = go up\nD = go down\n"
                         + "R = Room Description");
             }
-            else if(cf.parse(input).execute().equals("R")){
+            else if(cf.parse(input).execute().equals("r")){
                 gamestate.getCurrentRoom().visited = false;
             }
-            else if(cf.parse(input).execute().equals("ADMIN")){
+            else if(cf.parse(input).execute().equals("admin")){
                 boolean bool2 = true;
                 while(bool2){
                     System.out.println("Admin box. Press 'q' to exit, 'r' to read rooms, and 'e' to edit rooms.");
                     String str = scan.nextLine().toUpperCase();
-                    if(cf.parse(str).execute().equals("R")){
+                    if(cf.parse(str).execute().equals("r")){
                         Reader read = new Reader("DefaultRooms.txt");
                         read.openReader();
                         System.out.println(read.readAll());
                         read.closeReader();
                     }
-                    else if(cf.parse(str).execute().equals("Q")){
+                    else if(cf.parse(str).execute().equals("q")){
                         break;
                     }
-                    else if(cf.parse(str).execute().equals("E")){
+                    else if(cf.parse(str).execute().equals("e")){
                         RoomsEditor re = new RoomsEditor("Rooms.txt");
                         System.out.println("Enter room name: ");
                         String s = scan.nextLine();
@@ -99,7 +98,7 @@ public class Interpreter {
         return null;
     }
     
-    public void buildSampleDungeon(){
+    public void setupDungeon(){
 
         
         GameState gamestate = new GameState();
@@ -107,7 +106,6 @@ public class Interpreter {
         gamestate.initialize(towerOfBismuth);
         gamestate.getDungeon().readRoom();
         gamestate.getDungeon().readExit();
-        gamestate.setCurrentRoom(gamestate.getDungeon().getRoom("Entry"));
     }
     
 }

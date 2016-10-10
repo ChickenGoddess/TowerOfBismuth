@@ -69,6 +69,12 @@ public class Room {
         return exits.size();
     }
     
+    public void storeState(){
+        
+    }
     
+    public void restoreState(){
+        
+    }
     
 }
