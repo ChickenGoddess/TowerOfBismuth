@@ -1,4 +1,6 @@
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Scanner;
 
@@ -16,7 +18,8 @@ public class Dungeon {
     
     GameState gamestate = new GameState();
     String name;
-    Hashtable<String, Room> rooms = new Hashtable<>();
+    HashMap<String, Room> rooms = new HashMap<>();
+    ArrayList<Room> checkRooms = new ArrayList<>();
     String origin;
     
     public Dungeon(String filename){
@@ -42,6 +45,7 @@ public class Dungeon {
     
     private void addRoom(Room room){
         rooms.put(room.getName(), room);
+        checkRooms.add(room);
     }
     
     public Room getRoom(String roomName){
@@ -127,7 +131,13 @@ public class Dungeon {
     }
     
     public void restoreState(){
-        
+        gamestate.readSave("trinklev2.sav");
+        String left = gamestate.getInfo();
+        left = left.substring(left.indexOf("==="), left.length());
+        left = left.replace("===\n", "");
+        left = left.replace("Current room: ", "");
+        left = left.replace("\n", "");
+        gamestate.setCurrentRoom(this.getRoom(left));
     }
     
 }

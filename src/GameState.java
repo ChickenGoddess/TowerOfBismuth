@@ -10,7 +10,7 @@
  */
 public final class GameState {
     
-    String origin;
+    public static String origin;
     private static Room currentRoom;
     private static Dungeon dungeon;
     
@@ -23,6 +23,10 @@ public final class GameState {
         read.openReader();
         origin = read.readAll();
         read.closeReader();
+    }
+    
+    public String getInfo(){
+        return origin;
     }
     
     public void initialize(Dungeon dungeon){
@@ -41,6 +45,15 @@ public final class GameState {
         currentRoom = room;
     }
     
+    public void store(){
+        
+    }
     
+    public void restore(){
+        for(int i = 0; i < dungeon.checkRooms.size(); i++){
+            dungeon.checkRooms.get(i).restoreState("trinklev2.sav");
+        }
+        dungeon.restoreState();
+    }
     
 }

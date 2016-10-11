@@ -27,10 +27,6 @@ public class Room {
     
     public Room(String name){
         this.name = name;
-        Reader read = new Reader("Exit2.txt");
-        read.openReader();
-        origin = read.readAll();
-        read.closeReader();
     }
     
     public String getDescription(){
@@ -73,8 +69,35 @@ public class Room {
         
     }
     
-    public void restoreState(){
-        
+    public void restoreState(String filename){
+        String left = gamestate.getInfo();
+        if(left.contains(name)){
+            left = left.replace(left.substring(0, left.indexOf("states:")), "");
+            left = left.replace(left.substring(0, left.indexOf("\n")+1), "");
+            int exc = 0;
+            String at = "";
+            for(int i = 0; i < left.length()-3; i++){
+                at = left.substring(i, i+3);
+                if(at.equals("---")){
+                    exc += 1;
+                }
+            }
+            left = left.replace(left.substring(left.indexOf("==="), left.length()), "");
+            for(int i = 0; i < exc; i++){
+                String change = left.substring(0, left.indexOf("\n")+1);
+                String room = left.substring(0, left.indexOf("\n")-1);
+                if(room.equals(name)){
+                    left = left.replace(change, "");
+                    String beenhere = left.substring(0, left.indexOf("\n")+1);
+                    if(beenhere.contains("true")){
+                        visited = true;
+                    }
+                    else{
+                        visited = false;
+                    }
+                }
+            }
+        }
     }
     
 }

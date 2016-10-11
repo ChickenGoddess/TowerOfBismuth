@@ -23,6 +23,9 @@ public class Interpreter {
         if(gamestate.getDungeon() == null){
             interpret.setupDungeon();
         }
+        if(gamestate.getCurrentRoom() == null){
+            Room room = new Room("Room");
+        }
         System.out.println("Welcome to " + gamestate.getDungeon().getName());
         System.out.println("This is a text based adventure. For a commands list "
                 + "enter 'c'");
@@ -39,7 +42,7 @@ public class Interpreter {
             }
             System.out.print(">>");
             String input = scan.nextLine().toLowerCase();
-            if(input.equals("Q")){
+            if(input.equals("q")){
                 bool = false;
                 break;
             }
@@ -103,9 +106,11 @@ public class Interpreter {
         
         GameState gamestate = new GameState();
         Dungeon towerOfBismuth = new Dungeon("trinklev2.bork");
+        gamestate.readSave("trinklev2.sav");
         gamestate.initialize(towerOfBismuth);
         gamestate.getDungeon().readRoom();
         gamestate.getDungeon().readExit();
+        gamestate.restore();
     }
     
 }
