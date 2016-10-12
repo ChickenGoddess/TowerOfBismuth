@@ -82,6 +82,7 @@ public class Reader {
     
     public String readAll(){
         try{
+            manipulate = "";
             while((manipulate = br.readLine())!= null){
                 origin = origin + manipulate + "\n";
             }

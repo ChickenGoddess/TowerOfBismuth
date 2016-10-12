@@ -71,20 +71,23 @@ public class Room {
     public void storeState(){
         Reader reader = new Reader("trinklev2.sav");
         gamestate.readSave("trinklev2.sav");
-        String left = gamestate.getInfo();
-        String right = left.substring(0, left.indexOf("Room states:") + 13);
-        left = left.replace(right, "");
-        String middle = left.substring(0, left.indexOf("==="));
-        left = left.replace(middle + "===\n", "");
-        for(int i = 0; i < gamestate.getDungeon().checkRooms.size(); i++){
-            if(gamestate.getDungeon().checkRooms.get(i).visited == true){
-                String still = gamestate.getDungeon().checkRooms.get(i).getName();
-                right = right + still + ":\nbeenHere=true\n---\n";
-            }
+        String data = gamestate.getInfo();
+        int roomHeaderPos = data.indexOf("Room states:") + 13;
+        String left = data.substring(0, roomHeaderPos);
+        String right = data.substring(roomHeaderPos, data.length());
+        right = right.substring(right.indexOf("==="), right.length());
+        
+        String middle = "";
+        // Note: Assumes that there will always be at least one room
+        for (int i = 0; i < gamestate.getDungeon().checkRooms.size(); i++){
+            Room room = gamestate.getDungeon().checkRooms.get(i);
+            middle += room.getName() + '\n';
+            middle += "beenHere=" + Boolean.toString(room.visited) + '\n';
+            middle += "---\n";
         }
-        right = right + "===\n" + left;
+        String saveData = left + middle + right;
         reader.openWriter();
-        reader.writeAll(right);
+        reader.writeAll(saveData);
         reader.closeWriter();
     }
     
@@ -104,17 +107,18 @@ public class Room {
             left = left.replace(left.substring(left.indexOf("==="), left.length()), "");
             for(int i = 0; i < exc; i++){
                 String change = left.substring(0, left.indexOf("\n")+1);
-                String room = left.substring(0, left.indexOf("\n")-1);
+                String room = left.substring(0, left.indexOf("\n"));
+                left = left.replaceFirst(change, "");
                 if(room.equals(name)){
-                    left = left.replace(change, "");
                     String beenhere = left.substring(0, left.indexOf("\n")+1);
                     if(beenhere.contains("true")){
-                        visited = true;
+                        this.visited = true;
                     }
                     else{
-                        visited = false;
+                        this.visited = false;
                     }
                 }
+                left = left.replaceFirst(left.substring(0, left.indexOf("\n")) + "\n---\n", "");
             }
         }
     }

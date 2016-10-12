@@ -1,18 +1,23 @@
-Bork v2.0
 save data
 Dungeon file: /home/stephen/teaching/240/bork/files/trinkle.bork
 Room states:
-Basement hallway:
+Basement hallway
 beenHere=true
 ---
-Stephen's office:
+Rotunda
 beenHere=true
 ---
-Room B6:
+Stephen's office
 beenHere=true
 ---
-Rotunda balcony:
-beenHere=true
+Room B6
+beenHere=false
+---
+Room B13
+beenHere=false
+---
+Rotunda balcony
+beenHere=false
 ---
 ===
-Current room: Stephen's office
+Current room: Basement hallway

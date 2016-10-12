@@ -128,7 +128,7 @@ public class Dungeon {
     
     public void storeState(){
         Reader reader = new Reader("trinklev2.sav");
-        gamestate.readSave("trinklev2.save");
+        gamestate.readSave("trinklev2.sav");
         String left = gamestate.getInfo();
         left = left.substring(0, left.indexOf("Current room: "));
         String rhere = gamestate.getCurrentRoom().getName();
