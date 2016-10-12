@@ -16,11 +16,11 @@ import java.util.Scanner;
  */
 public class Dungeon {
     
-    GameState gamestate = new GameState();
-    String name;
-    HashMap<String, Room> rooms = new HashMap<>();
-    ArrayList<Room> checkRooms = new ArrayList<>();
-    String origin;
+    private GameState gamestate = new GameState();
+    private String name;
+    private HashMap<String, Room> rooms = new HashMap<>();
+    public ArrayList<Room> checkRooms = new ArrayList<>();
+    private String origin;
     
     public Dungeon(String filename){
         Reader read = new Reader(filename);
@@ -146,6 +146,5 @@ public class Dungeon {
         left = left.replace("Current room: ", "");
         left = left.replace("\n", "");
         gamestate.setCurrentRoom(this.getRoom(left));
-    }
-    
+    }    
 }
