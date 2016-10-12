@@ -1,9 +1,0 @@
-1#!Entry~!
-&&E~&
-#Can go east~&
-~Cave&#
-
-1#!Cave~!
-&&W~&
-#Can go west~&
-~Entry&#

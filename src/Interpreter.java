@@ -57,7 +57,7 @@ public class Interpreter {
             else if(cf.parse(input).execute().equals("c")){
                 System.out.println("W = go West\nE = go East\nN = go North\n"
                         + "S = go South\nC = Commands\nU = go up\nD = go down\n"
-                        + "R = Room Description");
+                        + "R = Room Description\nSAVE = save\nRESTORE = load last save");
             }
             else if(cf.parse(input).execute().equals("r")){
                 gamestate.getCurrentRoom().visited = false;
@@ -91,6 +91,15 @@ public class Interpreter {
                     }
                 }
             }
+            
+            else if(cf.parse(input).execute().equals("save")){
+                gamestate.store();
+            }
+            
+            else if(cf.parse(input).execute().equals("restore")){
+                gamestate.restore();
+            }
+            
             else{
                 System.out.println("That action is impossible.");
             }
@@ -98,7 +107,8 @@ public class Interpreter {
     }
     
     public String promptUser(Scanner commandLine){
-        return null;
+        String s = commandLine.nextLine();
+        return s;
     }
     
     public void setupDungeon(){

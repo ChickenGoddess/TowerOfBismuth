@@ -5,6 +5,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -17,6 +19,7 @@ import java.util.Iterator;
  * @author User
  */
 public class Room {
+    
     
     GameState gamestate = new GameState();
     String description;
@@ -66,7 +69,23 @@ public class Room {
     }
     
     public void storeState(){
-        
+        Reader reader = new Reader("trinklev2.sav");
+        gamestate.readSave("trinklev2.sav");
+        String left = gamestate.getInfo();
+        String right = left.substring(0, left.indexOf("Room states:") + 13);
+        left = left.replace(right, "");
+        String middle = left.substring(0, left.indexOf("==="));
+        left = left.replace(middle + "===\n", "");
+        for(int i = 0; i < gamestate.getDungeon().checkRooms.size(); i++){
+            if(gamestate.getDungeon().checkRooms.get(i).visited == true){
+                String still = gamestate.getDungeon().checkRooms.get(i).getName();
+                right = right + still + ":\nbeenHere=true\n---\n";
+            }
+        }
+        right = right + "===\n" + left;
+        reader.openWriter();
+        reader.writeAll(right);
+        reader.closeWriter();
     }
     
     public void restoreState(String filename){

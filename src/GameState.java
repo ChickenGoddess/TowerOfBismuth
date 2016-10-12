@@ -46,14 +46,15 @@ public final class GameState {
     }
     
     public void store(){
-        
+        this.getCurrentRoom().storeState();
+        this.getDungeon().storeState();
     }
     
     public void restore(){
         for(int i = 0; i < dungeon.checkRooms.size(); i++){
-            dungeon.checkRooms.get(i).restoreState("trinklev2.sav");
+            this.getDungeon().checkRooms.get(i).restoreState("trinklev2.sav");
         }
-        dungeon.restoreState();
+        this.getDungeon().restoreState();
     }
     
 }
