@@ -21,6 +21,7 @@ public class Dungeon {
     private HashMap<String, Room> rooms = new HashMap<>();
     public ArrayList<Room> checkRooms = new ArrayList<>();
     private String origin;
+    private ArrayList<Item> allItems = new ArrayList<>();
     
     public Dungeon(String filename){
         Reader read = new Reader(filename);
@@ -33,7 +34,7 @@ public class Dungeon {
     
     public Dungeon(Room entry, String name){
         this.name = name;
-        Reader read = new Reader("Rooms.txt");
+        Reader read = new Reader("trinkle3.bork");
         read.openReader();
         origin = read.readAll();
         read.closeReader();
@@ -61,6 +62,8 @@ public class Dungeon {
     public void readRoom(){
         String left = origin;
         String x = left.substring(0, left.indexOf("===") + 4);
+        left = left.replaceFirst(x, "");
+        x = left.substring(0, left.indexOf("===") + 4);
         left = left.replaceFirst(x, "");
         x = left.substring(left.indexOf("==="), left.length());
         left = left.replaceFirst(x, "");
@@ -123,6 +126,45 @@ public class Dungeon {
             Exit exit = new Exit(exitDirection, gamestate.getDungeon().getRoom(roomName), gamestate.getDungeon().getRoom(exitRoom));
             exit.setDescription(exitDesc);
             gamestate.getDungeon().getRoom(roomName).addExit(exit);
+        }
+    }
+    
+    public void readItems(){
+        String left = origin;
+        String change = left.substring(0, left.indexOf("===") + 4);
+        left = left.replaceFirst(change, "");
+        left = left.substring(7, left.indexOf("==="));
+        String at = "";
+        int line = 0;
+        for(int i = 0; i < left.length() - 3; i++){
+            at = left.substring(i, i+3);
+            if(at.equals("---")){
+                line++;
+            }
+        }
+        
+        for(int i = 0; i < line; i++){
+            String name = left.substring(0, left.indexOf("\n"));
+            left = left.replaceFirst(name + "\n", "");
+            String weight = left.substring(0, left.indexOf("\n"));
+            int we = Integer.parseInt(weight);
+            Item item = new Item(name, we);
+            left = left.replaceFirst(weight + "\n", "");
+            Boolean bool = true;
+            while(bool){
+                String check = left.substring(0, left.indexOf("---") + 3);
+                if(check.equals("---")){
+                    left = left.replaceFirst("---\n", "");
+                    break;
+                }
+                else{
+                    String verb = left.substring(0, left.indexOf(":"));
+                    left = left.replaceFirst(verb + ":", "");
+                    String message = left.substring(0, left.indexOf("\n"));
+                    left = left.replaceFirst(message + "\n", "");
+                    item.addMessage(verb, message);
+                }
+            }
         }
     }
     

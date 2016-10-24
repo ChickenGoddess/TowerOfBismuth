@@ -52,9 +52,13 @@ public final class GameState {
     
     public void restore(){
         for(int i = 0; i < dungeon.checkRooms.size(); i++){
-            this.getDungeon().checkRooms.get(i).restoreState("trinklev2.sav");
+            this.getDungeon().checkRooms.get(i).restoreState("trinkle3.sav");
         }
         this.getDungeon().restoreState();
+    }
+    
+    public void addToInventory(Item item){
+        
     }
     
 }

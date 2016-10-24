@@ -27,6 +27,7 @@ public class Room {
     boolean visited;
     ArrayList<Exit> exits = new ArrayList<>();
     String origin;
+    ArrayList<Item> items = new ArrayList<>();
     
     public Room(String name){
         this.name = name;
@@ -121,6 +122,32 @@ public class Room {
                 left = left.replaceFirst(left.substring(0, left.indexOf("\n")) + "\n---\n", "");
             }
         }
+    }
+    
+    public void addItem(Item item){
+        items.add(item);
+    }
+    
+    public Item getItem(Item item){
+        if(items.contains(item)){
+            return item;
+        }
+        else{
+            return null;
+        }
+    }
+    
+    public void removeItem(Item item){
+        items.remove(item);
+    }
+    
+    public boolean hasItem(String item){
+        for(int i = 0; i < items.size(); i++){
+            if(items.get(i).getName().equals(item)){
+                return true;
+            }
+        }
+        return false;
     }
     
 }

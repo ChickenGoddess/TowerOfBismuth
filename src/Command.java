@@ -10,14 +10,14 @@
  */
 public class Command {
     
-    String direction;
+    String action;
     
-    public Command(String direction){
-        this.direction = direction;
+    public Command(String action){
+        this.action = action;
     }
     
     public String execute(){
-        return direction;
+        return action;
     }
     
 }

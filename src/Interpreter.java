@@ -115,9 +115,10 @@ public class Interpreter {
 
         
         GameState gamestate = new GameState();
-        Dungeon towerOfBismuth = new Dungeon("trinklev2.bork");
-        gamestate.readSave("trinklev2.sav");
+        Dungeon towerOfBismuth = new Dungeon("trinkle3.bork");
+        gamestate.readSave("trinkle3.sav");
         gamestate.initialize(towerOfBismuth);
+        gamestate.getDungeon().readItems();
         gamestate.getDungeon().readRoom();
         gamestate.getDungeon().readExit();
         gamestate.restore();
