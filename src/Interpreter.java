@@ -38,6 +38,7 @@ public class Interpreter {
                 for(int i = 0; i < arlist.size(); i++){
                     System.out.println(gamestate.getCurrentRoom().exits.get(i).getDescription());
                 }
+                System.out.println(gamestate.getCurrentRoom().returnItems());
                 gamestate.getCurrentRoom().visited = true;
             }
             System.out.print(">>");

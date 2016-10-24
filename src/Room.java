@@ -71,7 +71,7 @@ public class Room {
     
     public void storeState(){
         Reader reader = new Reader("trinklev2.sav");
-        gamestate.readSave("trinklev2.sav");
+        gamestate.readSave("trinklev3.sav");
         String data = gamestate.getInfo();
         int roomHeaderPos = data.indexOf("Room states:") + 13;
         String left = data.substring(0, roomHeaderPos);
@@ -79,7 +79,6 @@ public class Room {
         right = right.substring(right.indexOf("==="), right.length());
         
         String middle = "";
-        // Note: Assumes that there will always be at least one room
         for (int i = 0; i < gamestate.getDungeon().checkRooms.size(); i++){
             Room room = gamestate.getDungeon().checkRooms.get(i);
             middle += room.getName() + '\n';
@@ -92,11 +91,12 @@ public class Room {
         reader.closeWriter();
     }
     
-    public void restoreState(String filename){
+    public void restoreState(){
+        gamestate.readSave("trinklev3.sav");
         String left = gamestate.getInfo();
         if(left.contains(name)){
-            left = left.replace(left.substring(0, left.indexOf("states:")), "");
-            left = left.replace(left.substring(0, left.indexOf("\n")+1), "");
+            left = left.replaceFirst(left.substring(0, left.indexOf("states:")), "");
+            left = left.replaceFirst(left.substring(0, left.indexOf("\n")+1), "");
             int exc = 0;
             String at = "";
             for(int i = 0; i < left.length()-3; i++){
@@ -107,8 +107,9 @@ public class Room {
             }
             left = left.replace(left.substring(left.indexOf("==="), left.length()), "");
             for(int i = 0; i < exc; i++){
+                String thisRoom = this.name;
                 String change = left.substring(0, left.indexOf("\n")+1);
-                String room = left.substring(0, left.indexOf("\n"));
+                String room = left.substring(0, left.indexOf(":"));
                 left = left.replaceFirst(change, "");
                 if(room.equals(name)){
                     String beenhere = left.substring(0, left.indexOf("\n")+1);
@@ -119,7 +120,63 @@ public class Room {
                         this.visited = false;
                     }
                 }
-                left = left.replaceFirst(left.substring(0, left.indexOf("\n")) + "\n---\n", "");
+                if(room.equals(name)){
+                    String check = left.substring(0, left.indexOf("---"));
+                    left = left.replaceFirst(check.substring(0, check.indexOf("\n") + 1), "");
+                    check = check.replaceFirst(check.substring(0, check.indexOf("\n") + 1), "");
+                    if(check.contains("Contents: ")){
+                        left = left.replaceFirst("Contents: ", "");
+                        String roomItems = left.substring(0, left.indexOf("\n"));
+                        int here = 1;
+                        for(int j = 0; j < roomItems.length(); j++){
+                            String chill = roomItems.substring(j, j+1);
+                            if(chill.equals(",")){
+                                here++;
+                            }
+                        }
+                        for(int p = 0; p < gamestate.getDungeon().allItems.size(); p++){
+                            for(int m = 0; m < this.items.size(); m++){
+                                if(gamestate.getDungeon().allItems.get(p).equals(this.items.get(m))){
+                                    this.items.remove(m);
+                                }
+                            }
+                        }
+                        for(int j = 0; j < here; j++){
+                            if(j == here - 1){
+                                String item = roomItems.substring(0);
+                                if(!(this.hasItem(item))){
+                                    for(int p = 0; p < gamestate.getDungeon().allItems.size(); p++){
+                                        if(gamestate.getDungeon().allItems.get(p).getName().equals(item)){
+                                            this.addItem(gamestate.getDungeon().allItems.get(p));
+                                        }
+                                    }
+                                }
+                                roomItems = roomItems.replaceFirst(item + "\n", "");
+                                left = left.replaceFirst(item + "\n", "");
+                            }
+                            else{
+                                String item = roomItems.substring(0, roomItems.indexOf(","));
+                                if(!(this.hasItem(item))){
+                                    for(int p = 0; p < gamestate.getDungeon().allItems.size(); p++){
+                                        if(gamestate.getDungeon().allItems.get(p).getName().equals(item)){
+                                            this.addItem(gamestate.getDungeon().allItems.get(p));
+                                        }
+                                    }
+                                }
+                                roomItems = roomItems.replaceFirst(item + ",", "");
+                            }
+                        }
+                    }
+                }
+                if(!(this.name.equals(room))){
+                    left = left.replaceFirst(left.substring(0, left.indexOf("\n") + 1), "");
+                }
+                
+                String hex = left.substring(0, left.indexOf("\n"));
+                if(hex.contains("Contents: ")){
+                    left = left.replaceFirst(hex + "\n", "");
+                }
+                left = left.replaceFirst("---\n", "");
             }
         }
     }
@@ -148,6 +205,22 @@ public class Room {
             }
         }
         return false;
+    }
+    
+    public String returnItems(){
+        String here = "";
+        if(items.size() == 1){
+            here = "There is ";
+        }else if(items.size() == 0){
+            return "";
+        }
+        else{
+            here = "There is ";
+        }
+        for(int i = 0; i < items.size(); i++){
+            here += "a " + items.get(i).getName() + ",\n";
+        }
+        return here;
     }
     
 }

@@ -21,7 +21,7 @@ public class Dungeon {
     private HashMap<String, Room> rooms = new HashMap<>();
     public ArrayList<Room> checkRooms = new ArrayList<>();
     private String origin;
-    private ArrayList<Item> allItems = new ArrayList<>();
+    ArrayList<Item> allItems = new ArrayList<>();
     
     public Dungeon(String filename){
         Reader read = new Reader(filename);
@@ -77,9 +77,25 @@ public class Dungeon {
             }
         }
         for(int j = 0; j < exclamation; j++){
+            int here = 0;
             String change = left.substring(0, left.indexOf("\n"));
             String roomName = change.replaceFirst("\n", "");
             left = left.replaceFirst(change, "").replaceFirst("\n", "");
+            String check = left.substring(0, left.indexOf("\n"));
+            if(check.contains("Contents:")){
+                left = left.replaceFirst("Contents: ", "");
+                check = left.substring(0, left.indexOf("\n"));
+                here = 1;
+                String comma = "";
+                for(int i = 0; i < check.length(); i++){
+                    comma = left.substring(i, i+1);
+                    if(comma.equals(",")){
+                        here++;
+                    }
+                }
+                left = left.replaceFirst(check, "");
+                left = left.replaceFirst("\n", "");
+            }
             change = left.substring(0, left.indexOf("---"));
             String roomDesc = change;
             left = left.replaceFirst(change, "").replaceFirst("---", "");
@@ -87,12 +103,37 @@ public class Dungeon {
             Room room = new Room(roomName);
             room.setDescription(roomDesc);
             Dungeon.this.addRoom(room);
+            if(here > 0){    
+                for(int i = 0; i < here; i++){
+                    String itemName = "";
+                    if(check.contains(",")){
+                        itemName = check.substring(0, check.indexOf(","));
+                        for(int p = 0; p < gamestate.getDungeon().allItems.size(); p++){
+                            if(gamestate.getDungeon().allItems.get(p).getName().equals(itemName)){
+                                room.addItem(this.allItems.get(p));
+                            }
+                        }
+                        check = check.replaceFirst(itemName + ",", "");
+                    }
+                    else{
+                        itemName = check.substring(0, check.length());
+                        for(int p = 0; p < gamestate.getDungeon().allItems.size(); p++){
+                            if(gamestate.getDungeon().allItems.get(p).getName().equals(itemName)){
+                                room.addItem(this.allItems.get(p));
+                            }
+                        }
+                        check = check.replaceFirst(itemName, "");
+                    }
+                }
+            }
         }
     }
     
     public void readExit(){
         String left = origin;
         String x = left.substring(0, left.indexOf("===") + 3);
+        left = left.replace(x, "");
+        x = left.substring(0, left.indexOf("===") + 3);
         left = left.replace(x, "");
         x = left.substring(0, left.indexOf("===") + 3);
         left = left.replace(x, "");
@@ -155,6 +196,7 @@ public class Dungeon {
                 String check = left.substring(0, left.indexOf("---") + 3);
                 if(check.equals("---")){
                     left = left.replaceFirst("---\n", "");
+                    this.addItem(item);
                     break;
                 }
                 else{
@@ -181,12 +223,26 @@ public class Dungeon {
     }
     
     public void restoreState(){
-        gamestate.readSave("trinklev2.sav");
+        gamestate.readSave("trinklev3.sav");
         String left = gamestate.getInfo();
         left = left.substring(left.indexOf("==="), left.length());
-        left = left.replace("===\n", "");
-        left = left.replace("Current room: ", "");
-        left = left.replace("\n", "");
+        left = left.replaceFirst("===\n", "");
+        left = left.replaceFirst("Adventurer:\n", "");
+        left = left.replaceFirst("Current room: ", "");
+        left = left.substring(0, left.indexOf("\n"));
         gamestate.setCurrentRoom(this.getRoom(left));
-    }    
+    }
+    
+    public void addItem(Item item){
+        allItems.add(item);
+    }
+    
+    public Item getItem(Item item){
+        for(int i = 0; i < allItems.size(); i++){
+            if(allItems.get(i).equals(item)){
+                return allItems.get(i);
+            }
+        }
+        return null;
+    }
 }
