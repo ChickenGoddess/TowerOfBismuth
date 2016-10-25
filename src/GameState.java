@@ -1,3 +1,6 @@
+
+import java.util.ArrayList;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -13,6 +16,7 @@ public final class GameState {
     public static String origin;
     private static Room currentRoom;
     private static Dungeon dungeon;
+    private ArrayList<Item> inventory = new ArrayList<>();
     
     public GameState(){
         
@@ -58,7 +62,11 @@ public final class GameState {
     }
     
     public void addToInventory(Item item){
-        
+        inventory.add(item);
+    }
+    
+    public void removeFromInventory(Item item){
+        inventory.remove(item);
     }
     
 }
