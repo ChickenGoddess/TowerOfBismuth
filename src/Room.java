@@ -70,7 +70,7 @@ public class Room {
     }
     
     public void storeState(){
-        Reader reader = new Reader("trinklev2.sav");
+        Reader reader = new Reader("trinklev3.sav");
         gamestate.readSave("trinklev3.sav");
         String data = gamestate.getInfo();
         int roomHeaderPos = data.indexOf("Room states:") + 13;
@@ -83,7 +83,17 @@ public class Room {
             Room room = gamestate.getDungeon().checkRooms.get(i);
             middle += room.getName() + '\n';
             middle += "beenHere=" + Boolean.toString(room.visited) + '\n';
-            middle += "---\n";
+            if(room.hasItems()){
+                middle += "Contents: ";
+                int here = items.size();
+                int there = 1;
+                for(Item item : items){
+                    middle += item.getName();
+                    if(there < here){
+                        middle += ",";
+                    }
+                }
+            }
         }
         String saveData = left + middle + right;
         reader.openWriter();
@@ -124,6 +134,13 @@ public class Room {
                     String check = left.substring(0, left.indexOf("---"));
                     left = left.replaceFirst(check.substring(0, check.indexOf("\n") + 1), "");
                     check = check.replaceFirst(check.substring(0, check.indexOf("\n") + 1), "");
+                    for(int p = 0; p < gamestate.getDungeon().allItems.size(); p++){
+                        for(int m = 0; m < this.items.size(); m++){
+                            if(gamestate.getDungeon().allItems.get(p).equals(this.items.get(m))){
+                                this.items.remove(m);
+                            }
+                        }
+                    }
                     if(check.contains("Contents: ")){
                         left = left.replaceFirst("Contents: ", "");
                         String roomItems = left.substring(0, left.indexOf("\n"));
@@ -132,13 +149,6 @@ public class Room {
                             String chill = roomItems.substring(j, j+1);
                             if(chill.equals(",")){
                                 here++;
-                            }
-                        }
-                        for(int p = 0; p < gamestate.getDungeon().allItems.size(); p++){
-                            for(int m = 0; m < this.items.size(); m++){
-                                if(gamestate.getDungeon().allItems.get(p).equals(this.items.get(m))){
-                                    this.items.remove(m);
-                                }
                             }
                         }
                         for(int j = 0; j < here; j++){
@@ -221,6 +231,15 @@ public class Room {
             here += "a " + items.get(i).getName() + ",\n";
         }
         return here;
+    }
+    
+    public boolean hasItems(){
+        if(!items.isEmpty()){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
     
 }
